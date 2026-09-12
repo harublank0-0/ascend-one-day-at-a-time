@@ -8,7 +8,7 @@
     "node": ">=24.0.0",
     "pnpm": ">=11.25.0"
   },
-  "packageManager": "pnpm@11.25.0",
+  "packageManager": "pnpm@12.4.1",
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
@@ -19,7 +19,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json",
-    "prepare": "husky"
+    "prepare": "husky",
+    "pdf:rip": "cd scripts/pdf-ripper && uv run python main.py"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
@@ -39,7 +40,9 @@
     "#database/*": "./database/*.js",
     "#tests/*": "./tests/*.js",
     "#start/*": "./start/*.js",
-    "#config/*": "./config/*.js"
+    "#config/*": "./config/*.js",
+    "#constants/*": "./app/constants/*.js",
+    "#data/*": "./data/"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^8.5.0",
@@ -87,12 +90,12 @@
     "@tuyau/core": "^1.2.2",
     "@vinejs/vine": "^4.4.0",
     "axios": "^1.19.0",
-    "better-sqlite3": "^13.0.3",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.2.4",
     "edge.js": "^6.5.1",
     "lucide-react": "^1.39.0",
     "luxon": "^3.7.2",
+    "pg": "^8.23.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "reflect-metadata": "^0.2.2",
@@ -114,7 +117,6 @@
   },
   "allowScripts": {
     "@swc/core": true,
-    "better-sqlite3": true,
     "esbuild": true,
     "fsevents": true
   },

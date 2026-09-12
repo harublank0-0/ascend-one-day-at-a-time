@@ -6,7 +6,7 @@ const dbConfig = defineConfig({
   /**
    * Default connection used for all queries.
    */
-  connection: 'sqlite',
+  connection: 'pg',
 
   connections: {
     /**
@@ -36,7 +36,7 @@ const dbConfig = defineConfig({
     //     /**
     //      * Paths containing migration files.
     //      */
-    //     paths: ['database/migrations'],
+    //     paths: ['database/migrations/sqlite'],
     //   },
     // },
 

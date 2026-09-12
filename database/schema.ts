@@ -7,6 +7,56 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class ContentSourceSchema extends BaseModel {
+  static $columns = ['createdAt', 'description', 'id', 'name', 'slug', 'updatedAt'] as const
+  $columns = ContentSourceSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare description: string | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+  @column()
+  declare slug: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class DailyContentSchema extends BaseModel {
+  static $columns = [
+    'content',
+    'contentSourceId',
+    'createdAt',
+    'day',
+    'id',
+    'metadata',
+    'month',
+    'title',
+    'updatedAt',
+  ] as const
+  $columns = DailyContentSchema.$columns
+  @column()
+  declare content: string
+  @column()
+  declare contentSourceId: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare day: number
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare metadata: any | null
+  @column()
+  declare month: number
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
   $columns = UserSchema.$columns
