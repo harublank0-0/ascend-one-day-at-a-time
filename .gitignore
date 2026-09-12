@@ -24,3 +24,10 @@ yarn-error.log
 
 # Platform specific
 .DS_Store
+
+# pdf ripper
+scripts/pdf-ripper/.venv
+
+# private date for local dev only
+data/books
+data/content.sqlite
