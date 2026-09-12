@@ -1,13 +1,12 @@
-import json
 import re
 from pathlib import Path
 
 import fitz  # PyMuPDF
 
 
-PDF_PATH = Path("./books/the-daily-stoic.pdf")
-OUTPUT_PATH = Path("./content/the-daily-stoic.json")
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+PDF_PATH = BASE_DIR / "data"/ "books" / "the-daily-stoic.pdf"
 
 MONTHS = {
     "January": 1,

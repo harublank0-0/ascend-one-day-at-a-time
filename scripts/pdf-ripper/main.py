@@ -3,11 +3,11 @@ from pathlib import Path
 from typing import Any
 
 from extract_jft import extract_jft
-from extract_the_daily_stoic import OUTPUT_PATH, extract_the_daily_stoic 
+from extract_the_daily_stoic import extract_the_daily_stoic
 from validate_content import validate_content
 
-JFT_OUTPUT_PATH = Path("./content/jft.json")
-DAILY_STOIC_OUTPUT_PATH = Path("./content/the-daily-stoic.json")
+JFT_OUTPUT_PATH = Path("../../data/contents/jft.json")
+DAILY_STOIC_OUTPUT_PATH = Path("../../data/contents/daily-stoic.json")
 
 def save_json(
     entries: list[dict[str, Any]],
@@ -38,7 +38,6 @@ def save_json(
     print(
         f"✓ Saved {len(entries)} entries to:"
     )
-    print(f"  {OUTPUT_PATH}")
 
 if __name__ == "__main__":
     jft = extract_jft()

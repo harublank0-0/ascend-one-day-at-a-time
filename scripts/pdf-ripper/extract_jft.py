@@ -9,9 +9,9 @@ import fitz
 # PATHS
 # ============================================================
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-PDF_PATH = BASE_DIR / "books"/ "just-for-today.pdf"
+PDF_PATH = BASE_DIR / "data"/ "books" / "just-for-today.pdf"
 
 # ============================================================
 # CONSTANTS
