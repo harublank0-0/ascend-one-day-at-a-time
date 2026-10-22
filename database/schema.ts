@@ -7,6 +7,23 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class CleanPeriodSchema extends BaseModel {
+  static $columns = ['createdAt', 'endedOn', 'id', 'startDate', 'updatedAt', 'userId'] as const
+  $columns = CleanPeriodSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare endedOn: string | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare startDate: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number
+}
+
 export class ContentSourceSchema extends BaseModel {
   static $columns = ['createdAt', 'description', 'id', 'name', 'slug', 'updatedAt'] as const
   $columns = ContentSourceSchema.$columns
@@ -57,8 +74,33 @@ export class DailyContentSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class JournalEntrySchema extends BaseModel {
+  static $columns = ['body', 'createdAt', 'entryDate', 'id', 'updatedAt', 'userId'] as const
+  $columns = JournalEntrySchema.$columns
+  @column()
+  declare body: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare entryDate: string
+  @column({ isPrimary: true })
+  declare id: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number
+}
+
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
+  static $columns = [
+    'createdAt',
+    'email',
+    'fullName',
+    'id',
+    'password',
+    'timezone',
+    'updatedAt',
+  ] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -70,6 +112,8 @@ export class UserSchema extends BaseModel {
   declare id: number
   @column({ serializeAs: null })
   declare password: string
+  @column()
+  declare timezone: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }

@@ -1,6 +1,14 @@
+import pg from 'pg'
 import env from '#start/env'
 import app from '@adonisjs/core/services/app'
 import { defineConfig } from '@adonisjs/lucid'
+
+/**
+ * Return DATE columns (OID 1082) as the "YYYY-MM-DD" text PostgreSQL holds
+ * instead of a JavaScript Date. A Date would pin the day to midnight in the
+ * server's zone and can shift it by one for anyone elsewhere.
+ */
+pg.types.setTypeParser(1082, (value) => value)
 
 const dbConfig = defineConfig({
   /**
@@ -57,6 +65,11 @@ const dbConfig = defineConfig({
         naturalSort: true,
         paths: ['database/migrations'],
       },
+      /**
+       * Test runs migrate a separate database; they must not rewrite the
+       * generated schema classes.
+       */
+      schemaGeneration: { enabled: !app.inTest, rulesPaths: ['./database/schema_rules.js'] },
       debug: app.inDev,
     },
 
