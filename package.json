@@ -20,7 +20,8 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json",
     "prepare": "husky",
-    "pdf:rip": "cd scripts/pdf-ripper && uv run python main.py"
+    "pdf:rip": "cd scripts/pdf-ripper && uv run python main.py",
+    "pdf:test": "cd scripts/pdf-ripper && uv run python -B -m unittest discover -p 'test_*.py'"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",

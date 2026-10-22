@@ -21,8 +21,13 @@ export function ReadingSection({ slug, name, reading }: SourceReading) {
           )}
 
           {reading.quote && (
-            <blockquote className="mt-5 border-l-2 pl-4 text-muted-foreground">
-              <p className="leading-7 italic">{reading.quote.text}</p>
+            <blockquote className="mt-5 space-y-3 border-l-2 pl-4 text-muted-foreground">
+              {/* A few readings open with two or three quotations, separated by a blank line. */}
+              {reading.quote.text.split('\n\n').map((passage) => (
+                <p key={passage} className="leading-7 italic">
+                  {passage}
+                </p>
+              ))}
               {reading.quote.reference && (
                 <footer className="mt-1 text-sm">{reading.quote.reference}</footer>
               )}

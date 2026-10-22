@@ -17,6 +17,7 @@ Every line answers: "Would an agent likely miss this without help?"
 | `pnpm format:check` | Check formatting (`prettier --check .`)                                     |
 | `pnpm typecheck`    | Typecheck (`tsc --noEmit` + `tsc --noEmit --project inertia/tsconfig.json`) |
 | `pnpm prepare`      | Husky setup (husky install)                                                 |
+| `pnpm pdf:test`     | Python tests for the book extractors (`scripts/pdf-ripper`, needs `uv`)     |
 
 ## Environment
 
@@ -54,6 +55,14 @@ Every line answers: "Would an agent likely miss this without help?"
 - Dates are `"YYYY-MM-DD"` strings end to end (`config/database.ts` makes the pg driver return DATE as text). Read `docs/adr/0001-time-and-timezone-handling.md` before touching anything date-related; helpers live in `app/services/calendar_dates.ts`
 - Business rules live in `app/services/*`; controllers stay thin. Services take `now` so tests can place the clock either side of a user's local midnight
 - Journal routes are addressed by date, never by id, and every query is scoped to the signed-in user. Keep it that way
+
+## Content pipeline
+
+- Readings come from the two books via `scripts/pdf-ripper` (`pnpm pdf:rip`, needs `uv`), which writes `data/contents/*.json`; then `node ace db:seed` loads them. The PDFs live in `data/books/` (gitignored, not in the repo)
+- `pnpm pdf:rip` rewrites both JSON files: review `git diff data/contents` before committing. `scripts/pdf-ripper/content/*.json` is an old, unreferenced copy of the output
+- The Daily Stoic layout drives `extract_the_daily_stoic.py` (its docstring explains it): each page starts with the drop-cap letter on its own line, which must be put back on the body; a 30pt cap is a whole word ("A worker") and gets a space, a 43pt one is a word prefix; attributions can wrap and an entry can have two or three epigraphs
+- `validate_content.py` refuses data where a reading starts mid-word, and `tests/unit/content_datasets.spec.ts` checks the shipped files. A fix to the extractor should come with a case in `scripts/pdf-ripper/test_extract_the_daily_stoic.py`
+- Run Python with `-B` here: `__pycache__/*.pyc` files are tracked, and importing the scripts rewrites them
 
 ## Testing quirks
 

@@ -69,6 +69,25 @@ def sort_key(value: str) -> tuple[int, int]:
     return int(month), int(day)
 
 
+def find_lowercase_starts(
+    entries: list[dict[str, Any]],
+) -> list[str]:
+    """
+    Dates of entries whose content starts with a lowercase letter.
+
+    A reading never starts mid-word. When one does, extraction has lost the
+    opening letter (the Daily Stoic's drop cap once went missing from most
+    readings and nothing noticed).
+    """
+
+    return [
+        entry["date"]
+        for entry in entries
+        if entry.get("content")
+        and entry["content"][0].islower()
+    ]
+
+
 # ============================================================
 # ENTRY VALIDATION
 # ============================================================
@@ -176,6 +195,31 @@ def validate_entries(
 
     else:
         print("✓ All entries have content")
+
+    # --------------------------------------------------------
+    # Readings that start mid-word
+    # --------------------------------------------------------
+
+    lowercase_starts = find_lowercase_starts(entries)
+
+    if lowercase_starts:
+        print(
+            f"❌ Entries starting mid-word "
+            f"(opening letter lost): {len(lowercase_starts)}"
+        )
+
+        for date in lowercase_starts[:10]:
+            print(f"  - {date}")
+
+        if len(lowercase_starts) > 10:
+            print(
+                f"  ... and {len(lowercase_starts) - 10} more"
+            )
+
+        valid = False
+
+    else:
+        print("✓ No entry starts mid-word")
 
     # --------------------------------------------------------
     # Missing closing
