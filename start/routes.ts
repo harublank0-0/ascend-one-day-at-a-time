@@ -19,6 +19,12 @@ router.where('date', { match: /^\d{4}-\d{2}-\d{2}$/ })
 
 router.get('/', [controllers.Home, 'index']).as('home')
 
+/**
+ * Today is open to everyone. The controller decides what a guest may see, and
+ * sends a signed-in user who has not finished setup to the setup page.
+ */
+router.get('today', [controllers.Today, 'show'])
+
 router
   .group(() => {
     router.get('signup', [controllers.NewAccount, 'create'])
@@ -45,8 +51,6 @@ router
      */
     router
       .group(() => {
-        router.get('today', [controllers.Today, 'show'])
-
         router.get('journal', [controllers.Journal, 'index'])
         router.put('journal/:date', [controllers.Journal, 'update'])
         router.delete('journal/:date', [controllers.Journal, 'destroy'])

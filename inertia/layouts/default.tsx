@@ -78,6 +78,16 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
           ) : (
             <nav aria-label="Account" className="flex items-center gap-1">
               <Link
+                route="today.show"
+                aria-current={pathname === '/today' ? 'page' : undefined}
+                className={cn(
+                  'inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
+                  pathname === '/today' && 'text-foreground'
+                )}
+              >
+                Today
+              </Link>
+              <Link
                 route="session.create"
                 className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
