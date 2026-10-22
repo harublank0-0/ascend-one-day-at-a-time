@@ -42,6 +42,72 @@ const routes = {
     tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
     types: placeholder as Registry['session.destroy']['types'],
   },
+  'setup.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/welcome',
+    tokens: [{"old":"/welcome","type":0,"val":"welcome","end":""}],
+    types: placeholder as Registry['setup.show']['types'],
+  },
+  'setup.store': {
+    methods: ["POST"],
+    pattern: '/welcome',
+    tokens: [{"old":"/welcome","type":0,"val":"welcome","end":""}],
+    types: placeholder as Registry['setup.store']['types'],
+  },
+  'today.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/today',
+    tokens: [{"old":"/today","type":0,"val":"today","end":""}],
+    types: placeholder as Registry['today.show']['types'],
+  },
+  'journal.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/journal',
+    tokens: [{"old":"/journal","type":0,"val":"journal","end":""}],
+    types: placeholder as Registry['journal.index']['types'],
+  },
+  'journal.update': {
+    methods: ["PUT"],
+    pattern: '/journal/:date',
+    tokens: [{"old":"/journal/:date","type":0,"val":"journal","end":""},{"old":"/journal/:date","type":1,"val":"date","end":""}],
+    types: placeholder as Registry['journal.update']['types'],
+  },
+  'journal.destroy': {
+    methods: ["DELETE"],
+    pattern: '/journal/:date',
+    tokens: [{"old":"/journal/:date","type":0,"val":"journal","end":""},{"old":"/journal/:date","type":1,"val":"date","end":""}],
+    types: placeholder as Registry['journal.destroy']['types'],
+  },
+  'settings.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/settings',
+    tokens: [{"old":"/settings","type":0,"val":"settings","end":""}],
+    types: placeholder as Registry['settings.show']['types'],
+  },
+  'timezone.update': {
+    methods: ["PUT"],
+    pattern: '/settings/timezone',
+    tokens: [{"old":"/settings/timezone","type":0,"val":"settings","end":""},{"old":"/settings/timezone","type":0,"val":"timezone","end":""}],
+    types: placeholder as Registry['timezone.update']['types'],
+  },
+  'clean_time.store': {
+    methods: ["POST"],
+    pattern: '/clean-time',
+    tokens: [{"old":"/clean-time","type":0,"val":"clean-time","end":""}],
+    types: placeholder as Registry['clean_time.store']['types'],
+  },
+  'clean_time.update': {
+    methods: ["PUT"],
+    pattern: '/clean-time',
+    tokens: [{"old":"/clean-time","type":0,"val":"clean-time","end":""}],
+    types: placeholder as Registry['clean_time.update']['types'],
+  },
+  'new_clean_period.store': {
+    methods: ["POST"],
+    pattern: '/clean-time/restart',
+    tokens: [{"old":"/clean-time/restart","type":0,"val":"clean-time","end":""},{"old":"/clean-time/restart","type":0,"val":"restart","end":""}],
+    types: placeholder as Registry['new_clean_period.store']['types'],
+  },
 } as const satisfies Record<string, AdonisEndpoint>
 
 export { routes }

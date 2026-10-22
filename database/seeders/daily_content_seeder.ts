@@ -13,7 +13,7 @@ type ContentType = {
     type: typeof ContentSources.JFT.slug | typeof ContentSources.THE_DAILY_STOIC.slug
     name: typeof ContentSources.JFT.name | typeof ContentSources.THE_DAILY_STOIC.name
   }
-  title: string
+  title: string | null
   quote: {
     text: string
     reference: string | null
@@ -34,7 +34,9 @@ const jsonToDBMapper = (contents: ContentType[], contentSourceId: string) =>
     contentSourceId: contentSourceId,
     day: content.day,
     month: content.month,
-    title: content.title ?? 'Title is N/A.',
+    // Some readings have no title in the book. Store it empty (the column is
+    // NOT NULL) and let the page leave the heading out; never invent a title.
+    title: content.title?.trim() ?? '',
     content: content.content,
 
     metadata: {

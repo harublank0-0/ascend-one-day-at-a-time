@@ -11,7 +11,13 @@ import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').renderInertia('home', {}).as('home')
+/**
+ * Journal entries are addressed by calendar date. A date that is not shaped
+ * like YYYY-MM-DD never reaches a controller.
+ */
+router.where('date', { match: /^\d{4}-\d{2}-\d{2}$/ })
+
+router.get('/', [controllers.Home, 'index']).as('home')
 
 router
   .group(() => {
@@ -26,5 +32,32 @@ router
 router
   .group(() => {
     router.post('logout', [controllers.Session, 'destroy'])
+
+    /**
+     * First-visit setup: the timezone every date depends on, and optionally a
+     * clean start date.
+     */
+    router.get('welcome', [controllers.Setup, 'show'])
+    router.post('welcome', [controllers.Setup, 'store'])
+
+    /**
+     * Everything below needs a timezone, so it waits for setup to be finished.
+     */
+    router
+      .group(() => {
+        router.get('today', [controllers.Today, 'show'])
+
+        router.get('journal', [controllers.Journal, 'index'])
+        router.put('journal/:date', [controllers.Journal, 'update'])
+        router.delete('journal/:date', [controllers.Journal, 'destroy'])
+
+        router.get('settings', [controllers.Settings, 'show'])
+        router.put('settings/timezone', [controllers.Timezone, 'update'])
+
+        router.post('clean-time', [controllers.CleanTime, 'store'])
+        router.put('clean-time', [controllers.CleanTime, 'update'])
+        router.post('clean-time/restart', [controllers.NewCleanPeriod, 'store'])
+      })
+      .use(middleware.setup())
   })
   .use(middleware.auth())
