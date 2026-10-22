@@ -49,6 +49,13 @@ export class Session {
   }
 
   /**
+   * Sets a cookie the way page script does (`document.cookie = name=encodeURIComponent(value)`).
+   */
+  setCookie(name: string, value: string) {
+    this.cookies.set(name, encodeURIComponent(value))
+  }
+
+  /**
    * Opens a page and follows redirects until a page (not a redirect) comes back.
    */
   async visit(path: string, maxRedirects = 5): Promise<TestResponse> {

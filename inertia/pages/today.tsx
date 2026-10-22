@@ -1,8 +1,10 @@
 import { Head } from '@inertiajs/react'
 import { CleanTimeSummary } from '~/components/clean_time_summary'
 import { DayNavigation } from '~/components/day_navigation'
+import { GuestPrompt } from '~/components/guest_prompt'
 import { JournalEditor } from '~/components/journal_editor'
 import { ReadingSection } from '~/components/reading_section'
+import { useRememberBrowserTimeZone } from '~/lib/guest_timezone'
 import type { CleanTime, SourceReading } from '~/lib/types'
 
 type TodayProps = {
@@ -12,23 +14,23 @@ type TodayProps = {
   todayDate: string
   previousDate: string
   nextDate: string | null
-  cleanTime: CleanTime
   readings: SourceReading[]
-  entry: { body: string } | null
-  maxJournalLength: number
-}
+} & (
+  | { isGuest: true; timeZone: string }
+  | {
+      isGuest: false
+      cleanTime: CleanTime
+      entry: { body: string } | null
+      maxJournalLength: number
+    }
+)
 
-export default function Today({
-  date,
-  dateLabel,
-  isToday,
-  previousDate,
-  nextDate,
-  cleanTime,
-  readings,
-  entry,
-  maxJournalLength,
-}: TodayProps) {
+export default function Today(props: TodayProps) {
+  const { date, dateLabel, isToday, previousDate, nextDate, readings } = props
+
+  // A guest has no saved timezone, so the browser tells the server its own.
+  useRememberBrowserTimeZone(props.isGuest)
+
   return (
     <>
       <Head title={isToday ? 'Today' : dateLabel} />
@@ -40,19 +42,23 @@ export default function Today({
         nextDate={nextDate}
       />
 
-      <CleanTimeSummary cleanTime={cleanTime} compact={!isToday} />
+      {!props.isGuest && <CleanTimeSummary cleanTime={props.cleanTime} compact={!isToday} />}
 
       {readings.map((source) => (
         <ReadingSection key={source.slug} {...source} />
       ))}
 
-      <JournalEditor
-        date={date}
-        dateLabel={dateLabel}
-        isToday={isToday}
-        entry={entry}
-        maxLength={maxJournalLength}
-      />
+      {props.isGuest ? (
+        <GuestPrompt />
+      ) : (
+        <JournalEditor
+          date={date}
+          dateLabel={dateLabel}
+          isToday={isToday}
+          entry={props.entry}
+          maxLength={props.maxJournalLength}
+        />
+      )}
     </>
   )
 }

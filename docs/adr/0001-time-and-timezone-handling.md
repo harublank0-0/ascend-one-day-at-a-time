@@ -53,6 +53,11 @@ The Daily Stoic and JFT repeat every year, so a reading is keyed by
   aliases (`Asia/Kathmandu` becomes `Asia/Katmandu`) and browsers report either
   spelling, so rewriting would break matching against the picker.
 - A user whose timezone is not set yet is sent to setup before seeing any date.
+- A signed-out visitor has no saved zone. Today's readings are open to them, read in the zone
+  their browser reports through a `guest_timezone` cookie that page script sets. The server
+  still works out the date: the cookie is checked like any other input, and UTC is used when it
+  is missing or not a real zone. Guests get the shared readings only; clean time and the journal
+  stay behind sign-in.
 
 ## Conventions that follow
 

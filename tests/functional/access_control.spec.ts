@@ -4,7 +4,7 @@ import { Session } from '#tests/helpers/http'
 import { signInAs } from '#tests/helpers/sessions'
 import { createUser } from '#tests/helpers/factories'
 
-const PRIVATE_PAGES = ['/today', '/journal', '/settings', '/welcome']
+const PRIVATE_PAGES = ['/journal', '/settings', '/welcome']
 
 test.group('access control | signed-out visitors', (group) => {
   group.each.setup(() => testUtils.db().truncate())

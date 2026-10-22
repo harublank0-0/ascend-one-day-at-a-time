@@ -17,12 +17,18 @@ export default function Home() {
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">
-        <Link route="new_account.create" className={cn(buttonVariants(), 'h-11 px-5')}>
+        <Link route="today.show" className={cn(buttonVariants(), 'h-11 px-5')}>
+          Read today&rsquo;s readings
+        </Link>
+        <Link
+          route="new_account.create"
+          className={cn(buttonVariants({ variant: 'outline' }), 'h-11 px-5')}
+        >
           Create an account
         </Link>
         <Link
           route="session.create"
-          className={cn(buttonVariants({ variant: 'outline' }), 'h-11 px-5')}
+          className={cn(buttonVariants({ variant: 'ghost' }), 'h-11 px-5')}
         >
           Log in
         </Link>
