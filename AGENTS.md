@@ -54,6 +54,7 @@ Every line answers: "Would an agent likely miss this without help?"
 - Dates are `"YYYY-MM-DD"` strings end to end (`config/database.ts` makes the pg driver return DATE as text). Read `docs/adr/0001-time-and-timezone-handling.md` before touching anything date-related; helpers live in `app/services/calendar_dates.ts`
 - Business rules live in `app/services/*`; controllers stay thin. Services take `now` so tests can place the clock either side of a user's local midnight
 - Journal routes are addressed by date, never by id, and every query is scoped to the signed-in user. Keep it that way
+- `/today` is public. A signed-in user gets `TodayService.memberPage` (clean time, readings, journal); a guest gets `guestPage` (readings only, read in the zone from the `guest_timezone` cookie, UTC if absent). Never add personal data to `guestPage`. Journal, settings and clean-time routes stay behind `auth` and `setup`
 
 ## Testing quirks
 
