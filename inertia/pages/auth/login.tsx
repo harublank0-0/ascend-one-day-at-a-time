@@ -1,49 +1,60 @@
-import { Form } from '@adonisjs/inertia/react'
+import { Head, usePage } from '@inertiajs/react'
+import { Form, Link } from '@adonisjs/inertia/react'
+import { Field } from '~/components/field'
+import { Button } from '~/components/ui/button'
 
 export default function Login() {
+  const { flash } = usePage()
+
   return (
-    <div className="form-container">
-      <div>
-        <h1> Login </h1>
-        <p>Enter your details below to login to your account</p>
-      </div>
+    <div className="mx-auto max-w-sm">
+      <Head title="Log in" />
 
-      <div>
-        <Form route="session.store">
-          {({ errors }) => (
-            <>
-              <div>
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  autoComplete="username"
-                  data-invalid={errors.email ? 'true' : undefined}
-                />
-                {errors.email && <div>{errors.email}</div>}
-              </div>
+      <h1 className="text-2xl font-semibold tracking-tight">Log in</h1>
+      <p className="mt-1 text-muted-foreground">Welcome back.</p>
 
-              <div>
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-                {errors.password ? <span>{errors.password}</span> : ''}
-              </div>
+      <Form route="session.store" className="mt-8 grid gap-5">
+        {({ errors, processing }) => (
+          <>
+            {flash.error && (
+              <p
+                role="alert"
+                className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+              >
+                {flash.error}
+              </p>
+            )}
 
-              <div>
-                <button type="submit" className="button">
-                  Login
-                </button>
-              </div>
-            </>
-          )}
-        </Form>
-      </div>
+            <Field
+              type="email"
+              name="email"
+              label="Email"
+              autoComplete="username"
+              autoCapitalize="none"
+              spellCheck={false}
+              error={errors.email}
+            />
+            <Field
+              type="password"
+              name="password"
+              label="Password"
+              autoComplete="current-password"
+              error={errors.password}
+            />
+
+            <Button type="submit" className="h-11 w-full" disabled={processing}>
+              {processing ? 'Logging in' : 'Log in'}
+            </Button>
+          </>
+        )}
+      </Form>
+
+      <p className="mt-6 text-sm text-muted-foreground">
+        New here?{' '}
+        <Link route="new_account.create" className="text-foreground underline underline-offset-4">
+          Create an account
+        </Link>
+      </p>
     </div>
   )
 }

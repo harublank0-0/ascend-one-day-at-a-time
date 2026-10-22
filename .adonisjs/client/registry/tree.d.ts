@@ -12,4 +12,29 @@ export interface ApiDefinition {
     store: typeof routes['session.store']
     destroy: typeof routes['session.destroy']
   }
+  setup: {
+    show: typeof routes['setup.show']
+    store: typeof routes['setup.store']
+  }
+  today: {
+    show: typeof routes['today.show']
+  }
+  journal: {
+    index: typeof routes['journal.index']
+    update: typeof routes['journal.update']
+    destroy: typeof routes['journal.destroy']
+  }
+  settings: {
+    show: typeof routes['settings.show']
+  }
+  timezone: {
+    update: typeof routes['timezone.update']
+  }
+  cleanTime: {
+    store: typeof routes['clean_time.store']
+    update: typeof routes['clean_time.update']
+  }
+  newCleanPeriod: {
+    store: typeof routes['new_clean_period.store']
+  }
 }

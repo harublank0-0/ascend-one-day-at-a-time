@@ -1,73 +1,66 @@
-import { Form } from '@adonisjs/inertia/react'
+import { Head } from '@inertiajs/react'
+import { Form, Link } from '@adonisjs/inertia/react'
+import { Field } from '~/components/field'
+import { Button } from '~/components/ui/button'
 
 export default function Signup() {
   return (
-    <div className="form-container">
-      <div>
-        <h1> Signup </h1>
-        <p>Enter your details below to create your account</p>
-      </div>
+    <div className="mx-auto max-w-sm">
+      <Head title="Create an account" />
 
-      <div>
-        <Form route="new_account.store">
-          {({ errors }) => (
-            <>
-              <div>
-                <label htmlFor="fullName">Full name</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  id="fullName"
-                  data-invalid={errors.fullName ? 'true' : undefined}
-                />
-                {errors.fullName && <div>{errors.fullName}</div>}
-              </div>
+      <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
+      <p className="mt-1 text-muted-foreground">
+        Your account is private. Setup takes about a minute.
+      </p>
 
-              <div>
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  autoComplete="email"
-                  data-invalid={errors.email ? 'true' : undefined}
-                />
-                {errors.email && <div>{errors.email}</div>}
-              </div>
+      <Form route="new_account.store" className="mt-8 grid gap-5">
+        {({ errors, processing }) => (
+          <>
+            <Field
+              type="text"
+              name="fullName"
+              label="Name (optional)"
+              autoComplete="name"
+              error={errors.fullName}
+            />
+            <Field
+              type="email"
+              name="email"
+              label="Email"
+              autoComplete="email"
+              autoCapitalize="none"
+              spellCheck={false}
+              error={errors.email}
+            />
+            <Field
+              type="password"
+              name="password"
+              label="Password"
+              hint="At least 8 characters."
+              autoComplete="new-password"
+              error={errors.password}
+            />
+            <Field
+              type="password"
+              name="passwordConfirmation"
+              label="Confirm password"
+              autoComplete="new-password"
+              error={errors.passwordConfirmation}
+            />
 
-              <div>
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  autoComplete="new-password"
-                  data-invalid={errors.password ? 'true' : undefined}
-                />
-                {errors.password && <div>{errors.password}</div>}
-              </div>
+            <Button type="submit" className="h-11 w-full" disabled={processing}>
+              {processing ? 'Creating account' : 'Create account'}
+            </Button>
+          </>
+        )}
+      </Form>
 
-              <div>
-                <label htmlFor="passwordConfirmation">Confirm password</label>
-                <input
-                  type="password"
-                  name="passwordConfirmation"
-                  id="passwordConfirmation"
-                  autoComplete="new-password"
-                  data-invalid={errors.passwordConfirmation ? 'true' : undefined}
-                />
-                {errors.passwordConfirmation && <div>{errors.passwordConfirmation}</div>}
-              </div>
-
-              <div>
-                <button type="submit" className="button">
-                  Sign up
-                </button>
-              </div>
-            </>
-          )}
-        </Form>
-      </div>
+      <p className="mt-6 text-sm text-muted-foreground">
+        Already have an account?{' '}
+        <Link route="session.create" className="text-foreground underline underline-offset-4">
+          Log in
+        </Link>
+      </p>
     </div>
   )
 }

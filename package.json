@@ -51,6 +51,7 @@
     "@adonisjs/tsconfig": "^2.0.0",
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
+    "@inertiajs/core": "3.7.0",
     "@japa/assert": "^4.2.0",
     "@japa/browser-client": "^2.3.0",
     "@japa/plugin-adonisjs": "^5.2.0",
