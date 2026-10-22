@@ -1,5 +1,6 @@
 import { assert } from '@japa/assert'
 import app from '@adonisjs/core/services/app'
+import { ensureTestDatabase } from '#tests/helpers/test_database'
 import type { Config } from '@japa/runner/types'
 import { pluginAdonisJS } from '@japa/plugin-adonisjs'
 import { dbAssertions } from '@adonisjs/lucid/plugins/db'
@@ -33,7 +34,12 @@ export const plugins: Config['plugins'] = [
  * The teardown functions are executed after all the tests
  */
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  setup: [],
+  setup: [
+    () => ensureTestDatabase(),
+    () => testUtils.db().migrate(),
+    // Start from empty tables even if an earlier run was killed before it could clean up.
+    async () => (await testUtils.db().truncate())(),
+  ],
   teardown: [],
 }
 
