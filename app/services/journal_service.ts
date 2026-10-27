@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import JournalEntry from '#models/journal_entry'
 import type User from '#models/user'
 import { fieldError } from '#services/field_error'
+import { plainTextOf } from '#services/markdown_text'
 import { todayFor } from '#services/user_calendar'
 import { parseCalendarDate, type CalendarDate } from '#services/calendar_dates'
 
@@ -19,7 +20,8 @@ export type JournalHistoryPage = {
 }
 
 /**
- * A user's private journal: one plain-text entry per calendar date.
+ * A user's private journal: one entry per calendar date, written in Markdown.
+ * The text is stored exactly as typed; only the page gives it a look.
  *
  * Every method is scoped to the user it is given. Callers pass the signed-in
  * user and a date; no entry id or user id from a request is ever trusted, so
@@ -104,7 +106,7 @@ export default class JournalService {
   }
 
   private excerptOf(body: string) {
-    const flattened = body.replace(/\s+/g, ' ').trim()
+    const flattened = plainTextOf(body)
     return flattened.length > EXCERPT_LENGTH
       ? `${flattened.slice(0, EXCERPT_LENGTH).trimEnd()}…`
       : flattened

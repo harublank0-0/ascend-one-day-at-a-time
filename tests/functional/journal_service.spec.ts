@@ -254,6 +254,21 @@ test.group('JournalService | history', (group) => {
     assert.equal(history.items[2].excerpt, 'Oldest.')
   })
 
+  test('shows an excerpt as text, without Markdown marks', async ({ assert }) => {
+    const user = await createUser()
+    const service = new JournalService()
+    await service.save(
+      user,
+      '2026-03-01',
+      '# Rough day\n\n**Slept badly.** See [the plan](https://example.com).\n\n- [x] meditate',
+      NOW
+    )
+
+    const history = await service.history(user, 1)
+
+    assert.equal(history.items[0].excerpt, 'Rough day Slept badly. See the plan. meditate')
+  })
+
   test('pages through long histories', async ({ assert }) => {
     const user = await createUser()
     const service = new JournalService()
