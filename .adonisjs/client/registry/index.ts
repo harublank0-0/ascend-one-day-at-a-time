@@ -12,6 +12,12 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['home']['types'],
   },
+  'today.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/today',
+    tokens: [{"old":"/today","type":0,"val":"today","end":""}],
+    types: placeholder as Registry['today.show']['types'],
+  },
   'new_account.create': {
     methods: ["GET","HEAD"],
     pattern: '/signup',
@@ -36,6 +42,30 @@ const routes = {
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
     types: placeholder as Registry['session.store']['types'],
   },
+  'forgot_password.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/forgot-password',
+    tokens: [{"old":"/forgot-password","type":0,"val":"forgot-password","end":""}],
+    types: placeholder as Registry['forgot_password.create']['types'],
+  },
+  'forgot_password.store': {
+    methods: ["POST"],
+    pattern: '/forgot-password',
+    tokens: [{"old":"/forgot-password","type":0,"val":"forgot-password","end":""}],
+    types: placeholder as Registry['forgot_password.store']['types'],
+  },
+  'reset_password.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/reset-password/:token',
+    tokens: [{"old":"/reset-password/:token","type":0,"val":"reset-password","end":""},{"old":"/reset-password/:token","type":1,"val":"token","end":""}],
+    types: placeholder as Registry['reset_password.create']['types'],
+  },
+  'reset_password.store': {
+    methods: ["POST"],
+    pattern: '/reset-password',
+    tokens: [{"old":"/reset-password","type":0,"val":"reset-password","end":""}],
+    types: placeholder as Registry['reset_password.store']['types'],
+  },
   'session.destroy': {
     methods: ["POST"],
     pattern: '/logout',
@@ -53,12 +83,6 @@ const routes = {
     pattern: '/welcome',
     tokens: [{"old":"/welcome","type":0,"val":"welcome","end":""}],
     types: placeholder as Registry['setup.store']['types'],
-  },
-  'today.show': {
-    methods: ["GET","HEAD"],
-    pattern: '/today',
-    tokens: [{"old":"/today","type":0,"val":"today","end":""}],
-    types: placeholder as Registry['today.show']['types'],
   },
   'journal.index': {
     methods: ["GET","HEAD"],

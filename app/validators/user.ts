@@ -6,8 +6,8 @@ import vine from '@vinejs/vine'
  * Emails are trimmed and lower-cased before they are checked or stored, so
  * "Sam@Example.com" and "sam@example.com" are one account and sign in the same.
  */
-const email = () => vine.string().trim().toLowerCase().email().maxLength(254)
-const password = () => vine.string().minLength(8).maxLength(128)
+export const email = () => vine.string().trim().toLowerCase().email().maxLength(254)
+export const password = () => vine.string().minLength(8).maxLength(128)
 
 /**
  * Validator to use when performing self-signup.

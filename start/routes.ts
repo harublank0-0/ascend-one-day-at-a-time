@@ -32,6 +32,17 @@ router
 
     router.get('login', [controllers.Session, 'create'])
     router.post('login', [controllers.Session, 'store'])
+
+    /**
+     * Forgotten password: ask for an emailed link, then choose a new password
+     * with the token from it.
+     */
+    router.get('forgot-password', [controllers.ForgotPassword, 'create'])
+    router.post('forgot-password', [controllers.ForgotPassword, 'store'])
+    router
+      .get('reset-password/:token', [controllers.ResetPassword, 'create'])
+      .where('token', { match: /^[\w-]{1,200}$/ })
+    router.post('reset-password', [controllers.ResetPassword, 'store'])
   })
   .use(middleware.guest())
 

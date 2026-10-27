@@ -3,6 +3,9 @@ import type { routes } from './index.ts'
 
 export interface ApiDefinition {
   home: typeof routes['home']
+  today: {
+    show: typeof routes['today.show']
+  }
   newAccount: {
     create: typeof routes['new_account.create']
     store: typeof routes['new_account.store']
@@ -12,12 +15,17 @@ export interface ApiDefinition {
     store: typeof routes['session.store']
     destroy: typeof routes['session.destroy']
   }
+  forgotPassword: {
+    create: typeof routes['forgot_password.create']
+    store: typeof routes['forgot_password.store']
+  }
+  resetPassword: {
+    create: typeof routes['reset_password.create']
+    store: typeof routes['reset_password.store']
+  }
   setup: {
     show: typeof routes['setup.show']
     store: typeof routes['setup.store']
-  }
-  today: {
-    show: typeof routes['today.show']
   }
   journal: {
     index: typeof routes['journal.index']

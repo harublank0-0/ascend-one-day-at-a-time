@@ -24,6 +24,11 @@ export default function Login() {
                 {flash.error}
               </p>
             )}
+            {flash.success && (
+              <p role="status" className="rounded-lg bg-muted px-3 py-2 text-sm">
+                {flash.success}
+              </p>
+            )}
 
             <Field
               type="email"
@@ -41,6 +46,12 @@ export default function Login() {
               autoComplete="current-password"
               error={errors.password}
             />
+            <Link
+              route="forgot_password.create"
+              className="-mt-2 justify-self-end py-1 text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
+            >
+              Forgot your password?
+            </Link>
 
             <Button type="submit" className="h-11 w-full" disabled={processing}>
               {processing ? 'Logging in' : 'Log in'}
