@@ -55,6 +55,7 @@ Every line answers: "Would an agent likely miss this without help?"
 - Dates are `"YYYY-MM-DD"` strings end to end (`config/database.ts` makes the pg driver return DATE as text). Read `docs/adr/0001-time-and-timezone-handling.md` before touching anything date-related; helpers live in `app/services/calendar_dates.ts`
 - Business rules live in `app/services/*`; controllers stay thin. Services take `now` so tests can place the clock either side of a user's local midnight
 - Journal routes are addressed by date, never by id, and every query is scoped to the signed-in user. Keep it that way
+- Forgotten passwords live in `PasswordResetService`: the emailed token is stored only as a SHA-256 hash, a user has one live link (unique `user_id`), it lasts 1 hour and is single use (spent by a `delete ... returning`), and a second request inside 60 seconds sends nothing. `/forgot-password` must answer the same whether or not the account exists, so do not make it reveal that. Mail goes out with `mail.sendLater` so SMTP speed does not give the answer away either. Dev sessions are cookies, so a reset cannot sign out a user's other sessions
 - `/today` is public. A signed-in user gets `TodayService.memberPage` (clean time, readings, journal); a guest gets `guestPage` (readings only, read in the zone from the `guest_timezone` cookie, UTC if absent). Never add personal data to `guestPage`. Journal, settings and clean-time routes stay behind `auth` and `setup`
 
 ## Content pipeline
@@ -74,6 +75,8 @@ Every line answers: "Would an agent likely miss this without help?"
 - Functional specs use `tests/helpers/http.ts` (`Session`: cookie jar, real CSRF token, Inertia headers) and `tests/helpers/clock.ts` (`freezeClock`)
 - `forceExit: false` in `adonisrc.ts` tests config — a failing run can hang instead of exiting; add `--force-exit` while iterating (a passing `pnpm test` exits by itself)
 - Run one spec with `node ace test functional --files=<name>`
+- With `mail.fake()`, mail _classes_ (`BaseMail`) are recorded in `fake.mails.sent()` / `fake.mails.queued()`; `fake.messages` only holds callback-style `mail.send((message) => ...)` messages
+- Prettier's Edge plugin reflows `.edge` templates, which splits sentences onto separate lines. Fine for HTML email, wrong for plain text, so the plain-text body is built in `PasswordResetMail`, not in a view
 
 ## Lint / Type / Format order
 
@@ -98,4 +101,5 @@ Always run in this order: `lint` -> `typecheck` -> `test` (then `pnpm build` bef
 - Redis is configured in `.env` (`REDIS_CONNECTION=local`, host/port)
 - If running locally: ensure Postgres (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`) and Redis are accessible
 - Another project may already hold port 5432, so this one runs on 5434. Compose reads `.env`: set `POSTGRES_USER=ascend`, `POSTGRES_PASSWORD=ascend`, `POSTGRES_DB=ascend`, `POSTGRES_PORT=5434` there and keep `DB_PORT=5434` in sync. Then plain `podman-compose up -d postgres` (or `podman start ascend-postgres`) is enough
+- Development email goes to Mailpit (`ascend-mailpit`, `podman-compose up -d mailpit`); nothing is sent for real. Other projects on this machine hold 1025/8025, so `.env` sets `MAILPIT_SMTP_PORT=1026`, `MAILPIT_UI_PORT=8026` and `SMTP_PORT=1026` (keep them in sync). The inbox is http://localhost:8026, and `GET /api/v1/messages` there lists mail as JSON
 - Without those values, `podman-compose` 1.3 passes the literal text `${POSTGRES_USER:-ascend}` as the Postgres user (it does not expand defaults inside `environment:`), which breaks first-time initialisation with "invalid character in extension owner", and it maps the default port 5432

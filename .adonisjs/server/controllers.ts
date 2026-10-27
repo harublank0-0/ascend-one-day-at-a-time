@@ -5,10 +5,12 @@
 
 export const controllers = {
   CleanTime: () => import('#controllers/clean_time_controller'),
+  ForgotPassword: () => import('#controllers/forgot_password_controller'),
   Home: () => import('#controllers/home_controller'),
   Journal: () => import('#controllers/journal_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
   NewCleanPeriod: () => import('#controllers/new_clean_period_controller'),
+  ResetPassword: () => import('#controllers/reset_password_controller'),
   Session: () => import('#controllers/session_controller'),
   Settings: () => import('#controllers/settings_controller'),
   Setup: () => import('#controllers/setup_controller'),
